@@ -85,8 +85,7 @@ Você pode alternar entre os cenários A e B comentando/descomentando o código 
 
 O cabeçalho de resposta crucial adicionado pelo servidor (porta 8080) é o **`Access-Control-Allow-Origin`**.
 
-O valor exato que ele envia é:
-$$\text{Access-Control-Allow-Origin: http://localhost:3000}$$
+O valor exato que ele envia é: **Access-Control-Allow-Origin: http://localhost:3000**
 
 * **Função:** Este cabeçalho informa ao navegador que a **Origem do Cliente** (`http://localhost:3000`) tem permissão explícita para ler o conteúdo da resposta da API, validando a regra de CORS. Sem ele, a requisição seria bloqueada.
 
@@ -107,6 +106,7 @@ $$\text{Access-Control-Allow-Origin: http://localhost:3000}$$
 Se o `corsOptions` fosse alterado para `origin: '*'`, o servidor enviaria o cabeçalho `Access-Control-Allow-Origin: *`.
 
 * **Resultado:** **Permissão Universal.** Qualquer domínio, protocolo ou porta seria permitido a acessar a API.
+* **Comportamento**: A requisição do seu frontend (3000) funcionaria, assim como funcionaria se o cliente estivesse em um domínio diferente (https://exemplo.com) ou em outra porta (http://localhost:5000).
 * **Atenção:** Isso é uma **prática insegura** para APIs não públicas, pois remove a proteção de origem. Além disso, **impede o uso de credenciais** (cookies) nas requisições, pois `Access-Control-Allow-Origin: *` é incompatível com a opção de envio de credenciais do navegador.
 ---
 
