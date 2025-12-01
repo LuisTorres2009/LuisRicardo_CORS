@@ -116,6 +116,6 @@ const corsOptions = {
 
 ## 👨‍💻 Autor
 
-Projeto desenvolvido por **Luis** como parte da atividade de desenvolvimento mobile.
+Projeto desenvolvido por **Luis**.
 
 ---
