@@ -79,39 +79,35 @@ Você pode alternar entre os cenários A e B comentando/descomentando o código 
 
 ---
 
-### ❓ Análise Detalhada (Etapas A e B)
+### ❓Respostas das Perguntas Feitas
 
 #### 1. Qual cabeçalho HTTP de resposta o middleware `cors` adicionou na **Etapa B** para que o navegador permitisse a requisição?
 
-O cabeçalho HTTP de resposta essencial adicionado na **Etapa B** pelo middleware `cors` é:
+O cabeçalho de resposta crucial adicionado pelo servidor (porta 8080) é o **`Access-Control-Allow-Origin`**.
 
+O valor exato que ele envia é:
 $$\text{Access-Control-Allow-Origin: http://localhost:3000}$$
 
-Quando o navegador (em `http://localhost:3000`) recebe a resposta do servidor (em `http://localhost:8080`), ele verifica este cabeçalho. Como o valor corresponde exatamente à origem do cliente, o navegador entende que o acesso é permitido e libera o código JavaScript do frontend para processar a resposta.
+* **Função:** Este cabeçalho informa ao navegador que a **Origem do Cliente** (`http://localhost:3000`) tem permissão explícita para ler o conteúdo da resposta da API, validando a regra de CORS. Sem ele, a requisição seria bloqueada.
 
 ---
 
-#### 2. Se você mudasse o backend para a porta 8081 sem mudar o frontend, o CORS ainda bloquearia? Por quê?
+#### 2. Se você mudasse o backend para a porta 8081 **sem mudar o frontend**, o CORS ainda bloquearia? Por quê?
 
-**Não, a alteração da porta do backend de 8080 para 8081 por si só não causaria um novo bloqueio de CORS**, *contanto que você também atualizasse a URL no arquivo `index.html` para apontar para a porta 8081.*
+**Não, a requisição não seria bloqueada pelo CORS, mas sim por um erro de conexão.**
 
-* **A Origem do Cliente permanece a mesma:** O frontend continua sendo `http://localhost:3000`.
-* **O Servidor (Porta 8081) enviaria o cabeçalho permitido:** Na Etapa B, o middleware `cors` está configurado para permitir `origin: 'http://localhost:3000'`. O novo servidor na porta 8081 enviaria o cabeçalho `Access-Control-Allow-Origin: http://localhost:3000`, e o acesso seria permitido.
-
-O bloqueio de CORS na Etapa A ocorre por diferença de Origem (diferença de porta já é uma diferença de Origem). A regra de permissão do CORS deve ser configurada corretamente no servidor para lidar com essa diferença de Origem. A mudança de 8080 para 8081 no servidor não altera o fato de que a **Origem do Cliente** (`3000`) ainda é a única permitida pela regra.
+* **Problema:** O frontend (`index.html`) ainda está configurado para tentar acessar a porta **8080**.
+* **Resultado:** Se o servidor for movido para a porta **8081**, nada estará escutando na porta 8080. A requisição falhará imediatamente no nível da rede, resultando em um erro de **Conexão Recusada** (`ERR_CONNECTION_REFUSED`).
+* **Conclusão:** O CORS só atua se o servidor receber a requisição; neste caso, a requisição nem sequer alcançaria o servidor na porta 8081.
 
 ---
 
 #### 3. O que aconteceria se você usasse `origin: '*'` no `corsOptions`?
 
-Se o `corsOptions` fosse alterado para `origin: '*'`:
+Se o `corsOptions` fosse alterado para `origin: '*'`, o servidor enviaria o cabeçalho `Access-Control-Allow-Origin: *`.
 
-```javascript
-const corsOptions = {
-    origin: '*', // Permite QUALQUER origem
-    // ...
-};
-```
+* **Resultado:** **Permissão Universal.** Qualquer domínio, protocolo ou porta seria permitido a acessar a API.
+* **Atenção:** Isso é uma **prática insegura** para APIs não públicas, pois remove a proteção de origem. Além disso, **impede o uso de credenciais** (cookies) nas requisições, pois `Access-Control-Allow-Origin: *` é incompatível com a opção de envio de credenciais do navegador.
 ---
 
 ## 👨‍💻 Autor
