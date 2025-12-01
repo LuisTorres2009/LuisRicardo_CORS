@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Frontend em 3000</title>
+</head>
+<body>
+
+    <h1>Cliente (Origem: 3000)</h1>
+    <p>Tentando acessar a API (Origem: 8088)...</p>
+
+    <button onclick="fazerRequisicao()">Acessar API</button>
+    <pre id="resultado"></pre>
+
+    <script>
+        const API_URL = 'http://localhost:8080/api/mensagem';
+        const resultadoElement = document.getElementById('resultado');
+
+        async function fazerRequisicao() {
+            resultadoElement.textContent = "Carregando...";
+
+            try {
+                // Requisição Fetch para a origem cruzada
+                const response = await fetch(API_URL);
+
+                // Se o CORS tivesse permitido, o código continuaria aqui
+                const data = await response.json();
+                resultadoElement.textContent = JSON.stringify(data, null, 2);
+
+            } catch (error) {
+                // IMPORTANTE: Erros de CORS NÃO são é capturado pelo try...catch.
+                // O navegador apenas registra no console.
+                resultadoElement.textContent = 'Erro de requisição. Cheque o console do navegador!';
+                console.error("Erro na requisição (verifique o erro de CORS):", error);
+            }
+        }
+    </script>
+
+</body>
+</html>
