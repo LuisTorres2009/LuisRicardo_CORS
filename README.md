@@ -2,7 +2,7 @@
 
 Este projeto demonstra a diferença entre um servidor **Backend (Porta 8080)** que **bloqueia (Etapa A)** e outro que **permite (Etapa B)** requisições de um **Frontend (Porta 3000)** de origem cruzada usando o middleware `cors`.
 
-Link do Vídeo:
+Link do Vídeo: https://drive.google.com/file/d/1A0gJT7viiXAGI54tIW2rPc1qqrtebho8/view?usp=drive_link
 
 ---
 
